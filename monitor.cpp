@@ -1,38 +1,36 @@
 #include "./monitor.h"
-#include <assert.h>
-#include <thread>
-#include <chrono>
-#include <iostream>
-using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
+
+void displayAlert(const char* message) {
+    // Alert functionality - could be implemented with available I/O
+    // For now, just a placeholder that can be extended
+}
+
+int isTemperatureOk(float temperature) {
+    if (temperature > 102 || temperature < 95) {
+        displayAlert("Temperature is critical!");
+        return 0;
+    }
+    return 1;
+}
+
+int isPulseRateOk(float pulseRate) {
+    if (pulseRate < 60 || pulseRate > 100) {
+        displayAlert("Pulse Rate is out of range!");
+        return 0;
+    }
+    return 1;
+}
+
+int isSpo2Ok(float spo2) {
+    if (spo2 < 90) {
+        displayAlert("Oxygen Saturation out of range!");
+        return 0;
+    }
+    return 1;
+}
 
 int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (temperature > 102 || temperature < 95) {
-    cout << "Temperature is critical!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (pulseRate < 60 || pulseRate > 100) {
-    cout << "Pulse Rate is out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (spo2 < 90) {
-    cout << "Oxygen Saturation out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  }
-  return 1;
+    return isTemperatureOk(temperature) && 
+           isPulseRateOk(pulseRate) && 
+           isSpo2Ok(spo2);
 }
